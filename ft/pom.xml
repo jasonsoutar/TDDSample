@@ -48,6 +48,19 @@
                     <startParallel>true</startParallel>
                     <images>
                         <image>
+                            <name>cassandra:3.10</name>
+                            <alias>cassandra</alias>
+                            <run>
+                                <ports>
+                                    <port>9042:9042</port>
+                                </ports>
+                                <wait>
+                                    <log>Starting listening for CQL clients on</log>
+                                    <time>20000</time>
+                                </wait>
+                            </run>
+                        </image>
+                        <image>
                             <name>siggen</name>
                             <alias>siggen</alias>
                             <run>
@@ -56,13 +69,16 @@
                                 </ports>
                                 <wait>
                                     <tcp>
-                                        <host>0.0.0.0</host>
+                                        <host>127.0.0.1</host>
                                         <ports>
                                             <port>8080</port>
                                         </ports>
                                     </tcp>
                                     <time>20000</time>
                                 </wait>
+                                <links>
+                                    <link>cassandra</link>
+                                </links>
                             </run>
                         </image>
                     </images>
@@ -75,14 +91,14 @@
                             <goal>start</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>stop</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                            <goal>remove</goal>
-                        </goals>
-                    </execution>
+                    <!--<execution>-->
+                        <!--<id>stop</id>-->
+                        <!--<phase>post-integration-test</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>stop</goal>-->
+                            <!--<goal>remove</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
                 </executions>
             </plugin>
             <plugin>
@@ -91,6 +107,7 @@
                 <version>2.19.1</version>
                 <configuration>
                     <systemPropertyVariables>
+                        <cassandraHost>${docker.host.address}</cassandraHost>
                     </systemPropertyVariables>
                 </configuration>
                 <executions>
@@ -112,6 +129,13 @@
             <artifactId>cucumber-java</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.datastax.cassandra</groupId>
+            <artifactId>cassandra-driver-core</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+
 
         <dependency>
             <groupId>info.cukes</groupId>
