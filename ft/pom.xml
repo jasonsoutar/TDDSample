@@ -67,6 +67,13 @@
                                 <ports>
                                     <port>8080:8080</port>
                                 </ports>
+                                <env>
+                                    <JAVA_OPTS>
+                                        -Xdebug
+                                        -Xrunjdwp:transport=dt_socket,address=5005,server=y,suspend=n
+                                        -DcassandraHost=cassandra
+                                    </JAVA_OPTS>
+                                </env>
                                 <wait>
                                     <tcp>
                                         <host>127.0.0.1</host>
@@ -133,7 +140,7 @@
         <dependency>
             <groupId>com.datastax.cassandra</groupId>
             <artifactId>cassandra-driver-core</artifactId>
-            <version>3.1.4</version>
+            <scope>test</scope>
         </dependency>
 
 

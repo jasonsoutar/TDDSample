@@ -23,5 +23,5 @@ ADD . /
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-CMD java -jar /siggen-*.jar
+CMD java $JAVA_OPTS -jar /siggen-*.jar
 
